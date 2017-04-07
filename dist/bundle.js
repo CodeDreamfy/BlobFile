@@ -10371,34 +10371,31 @@ $(function(){
 	// 	console.log(markup)
 	// })
 
-	// $.get('http://onx6ouezf.bkt.clouddn.com/on.BIN', function(data){
-	// 	var blob = new Blob([data]);
-	// 	let reader = new FileReader();
-	// 	reader.onload = function(e){
-	// 		if(reader.result) {
-	// 			reader.content = reader.result;
-	// 			console.log(reader.content)
-	// 		}
-	// 		var markup = [];
-	// 		var result = reader.result;
-	// 		for (var n = 0; n < result.length; ++n) {
-	// 				var aByte = result.charCodeAt(n);
-	// 				var byteStr = aByte.toString(16);
-	// 				if (byteStr.length < 2) {
-	// 						byteStr = "0" + byteStr;
-	// 				}
-	// 				markup.push(byteStr);
-	// 		}
-	// 		console.log(markup)
-	// 	}
-	// 	reader.readAsBinaryString(blob)
-	// })
-	var file = File('./bin/on.BIN');
-	console.log(file)
 
-	
-	
-	
+	var oReq = new XMLHttpRequest(), markup = [];
+	oReq.open("GET", "http://onx6ouezf.bkt.clouddn.com/on.BIN", true);
+	oReq.responseType = "arraybuffer";
+
+	oReq.onload = function (oEvent) {
+		var arrayBuffer = oReq.response; // 注意:不是oReq.responseText
+		if (arrayBuffer) {
+			var byteArray = new Uint8Array(arrayBuffer);
+			console.log(byteArray)
+			for (var i = 0; i < byteArray.byteLength; i++) {
+				// 对数组中的每个字节进行操作
+				var aByte = byteArray[i];
+				var byteStr = aByte.toString(16);
+				if (byteStr.length < 2) {
+						byteStr = "0" + byteStr;
+				}
+				markup.push(byteStr);
+			}
+			console.log(markup)
+		}
+	};
+	oReq.send(null);
+
+
 })
 
 
